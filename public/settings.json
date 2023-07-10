@@ -7,18 +7,23 @@
     "amount_gen": 180,
     "max_context": 2048,
     "main_api": "poe",
-    "world_info": null,
+    "world_info": {
+        "globalSelect": []
+    },
     "world_info_depth": 2,
-    "world_info_budget": 200,
+    "world_info_budget": 25,
     "world_info_recursive": false,
     "world_info_case_sensitive": false,
     "world_info_match_whole_words": false,
+    "world_info_character_strategy": 1,
     "textgenerationwebui_settings": {
         "temp": 0.5,
         "top_p": 0.9,
         "top_k": 0,
         "top_a": 0,
         "tfs": 1,
+        "epsilon_cutoff": 0,
+        "eta_cutoff": 0,
         "typical_p": 1,
         "rep_pen": 1.1,
         "no_repeat_ngram_size": 0,
@@ -61,14 +66,19 @@
         "trim_sentences": false,
         "include_newline": false,
         "always_force_name2": false,
+        "user_prompt_bias": "",
+        "show_user_prompt_bias": true,
         "multigen": false,
         "multigen_first_chunk": 50,
         "multigen_next_chunks": 30,
         "custom_chat_separator": "",
+        "markdown_escape_strings": "",
         "fast_ui_mode": false,
         "avatar_style": 1,
         "chat_display": 1,
         "sheld_width": 1,
+        "never_resize_avatars": false,
+        "show_card_avatar_urls": false,
         "play_message_sound": false,
         "play_sound_unfocused": true,
         "auto_save_msg_edits": false,
@@ -81,11 +91,13 @@
         "main_text_color": "rgba(220, 220, 210, 1)",
         "italics_text_color": "rgba(175, 175, 175, 1)",
         "quote_text_color": "rgba(220, 220, 210, 1)",
-        "fastui_bg_color": "rgba(0, 0, 0, 0.9)",
         "blur_tint_color": "rgba(0, 0, 0, 0.5)",
+        "user_mes_blur_tint_color": "rgba(0, 0, 0, 0.3)",
+        "bot_mes_blur_tint_color": "rgba(60, 60, 60, 0.3)",
         "shadow_color": "rgba(0, 0, 0, 0.5)",
         "waifuMode": false,
         "movingUI": false,
+        "movingUIState": {},
         "noShadows": false,
         "theme": "Default (Dark)",
         "auto_swipe": false,
@@ -101,9 +113,13 @@
         "allow_name2_display": false,
         "hotswap_enabled": true,
         "timer_enabled": true,
+        "timestamps_enabled": true,
+        "mesIDDisplay_enabled": true,
         "max_context_unlocked": false,
         "prefer_character_prompt": true,
         "prefer_character_jailbreak": true,
+        "continue_on_send": false,
+        "trim_spaces": true,
         "instruct": {
             "enabled": false,
             "wrap": true,
@@ -117,7 +133,11 @@
             "separator_sequence": ""
         },
         "personas": {},
-        "default_persona": null
+        "default_persona": null,
+        "persona_descriptions": {},
+        "persona_description": "",
+        "persona_description_position": 0,
+        "fastui_bg_color": "rgba(0, 0, 0, 0.9)"
     },
     "poe_settings": {
         "bot": "a2",
@@ -137,7 +157,39 @@
         "autoConnect": false,
         "disabledExtensions": [],
         "expressionOverrides": [],
-        "memory": {},
+        "memory": {
+            "minLongMemory": 16,
+            "maxLongMemory": 1024,
+            "longMemoryLength": 128,
+            "shortMemoryLength": 512,
+            "minShortMemory": 128,
+            "maxShortMemory": 1024,
+            "shortMemoryStep": 16,
+            "longMemoryStep": 8,
+            "repetitionPenaltyStep": 0.05,
+            "repetitionPenalty": 1.2,
+            "maxRepetitionPenalty": 2,
+            "minRepetitionPenalty": 1,
+            "temperature": 1,
+            "minTemperature": 0.1,
+            "maxTemperature": 2,
+            "temperatureStep": 0.05,
+            "lengthPenalty": 1,
+            "minLengthPenalty": -4,
+            "maxLengthPenalty": 4,
+            "lengthPenaltyStep": 0.1,
+            "memoryFrozen": false,
+            "source": "extras",
+            "prompt": "[Pause your roleplay. Summarize the most important facts and events that have happened in the chat so far. If a summary already exists in your memory, use that as a base and expand with new facts. Limit the summary to {{words}} words or less. Your response should include nothing but the summary.]",
+            "promptWords": 200,
+            "promptMinWords": 25,
+            "promptMaxWords": 1000,
+            "promptWordsStep": 25,
+            "promptInterval": 10,
+            "promptMinInterval": 1,
+            "promptMaxInterval": 100,
+            "promptIntervalStep": 1
+        },
         "note": {
             "default": "",
             "chara": []
@@ -187,17 +239,35 @@
         },
         "objective": {},
         "quickReply": {
-            "quickReply1Mes": "",
-            "quickReply1Label": "",
-            "quickReply2Mes": "",
-            "quickReply2Label": "",
-            "quickReply3Mes": "",
-            "quickReply3Label": "",
-            "quickReply4Mes": "",
-            "quickReply4Label": "",
-            "quickReply5Mes": "",
-            "quickReply5Label": "",
-            "quickReplyEnabled": false
+            "quickReplyEnabled": false,
+            "quickReplySlots": [
+                {
+                    "mes": "",
+                    "label": "",
+                    "enabled": true
+                },
+                {
+                    "mes": "",
+                    "label": "",
+                    "enabled": true
+                },
+                {
+                    "mes": "",
+                    "label": "",
+                    "enabled": true
+                },
+                {
+                    "mes": "",
+                    "label": "",
+                    "enabled": true
+                },
+                {
+                    "mes": "",
+                    "label": "",
+                    "enabled": true
+                }
+            ],
+            "numberOfSlots": 5
         }
     },
     "context_settings": {
@@ -232,7 +302,8 @@
     "tag_map": {
         "Aqua.png": [],
         "Darkness.png": [],
-        "Megumin.png": []
+        "Megumin.png": [],
+        "Ebenezer Scrooge.png": []
     },
     "temp_novel": 1.11,
     "rep_pen_novel": 1.11,
@@ -252,7 +323,15 @@
     "single_line": false,
     "use_stop_sequence": false,
     "streaming_kobold": false,
-    "can_use_streaming": false,
+    "sampler_order": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+    ],
     "temp_openai": "0.9",
     "freq_pen_openai": 0.7,
     "pres_pen_openai": 0.7,
@@ -301,5 +380,6 @@
     "reverse_proxy": "",
     "legacy_streaming": false,
     "chat_completion_source": "openai",
-    "max_context_unlocked": false
+    "max_context_unlocked": false,
+    "use_openrouter": false
 }
